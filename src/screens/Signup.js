@@ -23,29 +23,29 @@ const ErrorText = styled.Text`
 `;
 
 const Signup = () => {
-   const [name, setName] = useState('');
-   const [email, setEmail] = useState('');
-   const [password, setPassword] = useState('');
-   const [passwordConfirm, setPasswordConfirm] = useState('');
-   const [errorMessage, setErrorMessage] = useState('');
-   const [disabled, setDisabled] = useState(true);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [disabled, setDisabled] = useState(true);
 
-   const didMountRef = useRef();
-   const emailRef = useRef();
-   const passwordRef = useRef();
-   const passwordConfirmRef = useRef();
- 
-   const [photoUrl, setPhotoUrl] = useState(images.photo);
+  const didMountRef = useRef();
+  const emailRef = useRef();
+  const passwordRef = useRef();
+  const passwordConfirmRef = useRef();
 
-   useEffect(()=> {
-    if(didMountRef.current){
+  const [photoUrl, setPhotoUrl] = useState(images.photo);
+
+  useEffect(() => {
+    if (didMountRef.current) {
       let_errorMessage = '';
-      if(!name){
-        _errorMessage = 'Please enter your name.'; 
+      if (!name) {
+        _errorMessage = 'Please enter your name.';
       } else if (!validateEmail) {
         _errorMessage = 'Please verify your email.';
       } else if (password.length < 6) {
-        _errorMessage = "The password must contain 6 characters at least.";
+        _errorMessage = 'The password must contain 6 characters at least.';
       } else if (password !== passwordConfirm) {
         _errorMessage = 'Passwords need to match';
       } else {
@@ -53,76 +53,71 @@ const Signup = () => {
       }
       setErrorMessage(_errorMessage);
     } else {
-      didMountRef.current =true;
+      didMountRef.current = true;
     }
+  }, [name, email, password, passwordConfirm]);
 
+  useEffect(() => {
+    setDisabled(
+      !(name && email && password && passwordConfirm && !errorMessage)
+    );
+  }, [name, email, password, passwordConfirm, errorMessage]);
 
-   },[name, email, password, passwordConfirm]);
-
-   useEffect(()=> {
-     setDisabled(
-       !(name && email && password && passwordConfirm && !errorMessage)
-     );
-   },[name, email,password, passwordConfirm, errorMessage]);
-
-   const _handleSignupButtonPress =()=> {};
+  const _handleSignupButtonPress = () => {};
 
   return (
-    <KeyboardAwareScrollView
-      contentContainerStyle={{flex: 1}}
-      extraScrollheight={20}
-    > 
-    <Container>
-      <Image rounded url={photoUrl}/>
-      <Input
-        label="Name"
-        value={name}
-        onChangeText={text => setName(text)}
-        onSubmitEditing={()=> {
-          setName(name.trim());
-          emailRef.current.focus();
-        }}
-        onBlur={()=> setName(name.trim())}
-        placeholder="Name"
-        returnKeyType="next"
-      />
-      <Input
-        ref={emailRef}
-        label="Email"
-        value={email}
-        onChangeText={text => setEmail(removeWhitespace(text))}
-        onSubmitEditing={()=> passwordRef.current.focus()}
-        placeholder="Email"
-        returnKeyType="next"
-      />
-      <Input
-        ref={passwordRef}
-        label="Password"
-        value={password}
-        onChangeText={text => setPassword(removeWhitespace(text))}
-        onSubmitEditing={()=> passwordConfirmRef.current.focus()}
-        placeholder="Password"
-        returnKeyType="next"
-        isPassword
-      />
+    <KeyboardAwareScrollView extraScrollheight={20}>
+      <Container>
+        <Image rounded url={photoUrl} showButton />
+        <Input
+          label="Name"
+          value={name}
+          onChangeText={text => setName(text)}
+          onSubmitEditing={() => {
+            setName(name.trim());
+            emailRef.current.focus();
+          }}
+          onBlur={() => setName(name.trim())}
+          placeholder="Name"
+          returnKeyType="next"
+        />
+        <Input
+          ref={emailRef}
+          label="Email"
+          value={email}
+          onChangeText={text => setEmail(removeWhitespace(text))}
+          onSubmitEditing={() => passwordRef.current.focus()}
+          placeholder="Email"
+          returnKeyType="next"
+        />
+        <Input
+          ref={passwordRef}
+          label="Password"
+          value={password}
+          onChangeText={text => setPassword(removeWhitespace(text))}
+          onSubmitEditing={() => passwordConfirmRef.current.focus()}
+          placeholder="Password"
+          returnKeyType="next"
+          isPassword
+        />
 
-      <Input
-        ref={passwordConfirmRef}
-        label="Password Confirm"
-        value={passwordConfirm}
-        onChangeText={text => setPasswordConfirm(removeWhitespace(text))}
-        onSubmitEditing={_handleSignupButtonPress}
-        placeholder="Password"
-        returnKeyType="done"
-        isPassword
-      />
-      <ErrorText>{errorMessage}</ErrorText>
-      <Button
-        title="Signup"
-        onPress={_handleSignupButtonPress}
-        disabled={disabled}
-      />
-    </Container>
+        <Input
+          ref={passwordConfirmRef}
+          label="Password Confirm"
+          value={passwordConfirm}
+          onChangeText={text => setPasswordConfirm(removeWhitespace(text))}
+          onSubmitEditing={_handleSignupButtonPress}
+          placeholder="Password"
+          returnKeyType="done"
+          isPassword
+        />
+        <ErrorText>{errorMessage}</ErrorText>
+        <Button
+          title="Signup"
+          onPress={_handleSignupButtonPress}
+          disabled={disabled}
+        />
+      </Container>
     </KeyboardAwareScrollView>
   );
 };

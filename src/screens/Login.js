@@ -1,12 +1,11 @@
 import React, {useState, useRef, useEffect} from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/native';
 import {Image, Input, Button} from '../components';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {validateEmail, removeWhitespace} from '../utils/common';
 import {TouchableOpacity, Text} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-
-//import {images} from '../utils/images';
+import {images} from '../utils/images';
 
 const Container = styled.View`
   flex: 1;
@@ -14,8 +13,8 @@ const Container = styled.View`
   align-items: center;
   background-color: ${({theme}) => theme.background};
   padding: 0 20px;
-  padding-top: ${({insets:{top}}) => top}px;
-  padding-bottom: ${({insets:{bottom}})=> bottom}px; 
+  padding-top: ${({insets: {top}}) => top}px;
+  padding-bottom: ${({insets: {bottom}}) => bottom}px;
 `;
 
 const ErrorText = styled.Text`
@@ -27,7 +26,6 @@ const ErrorText = styled.Text`
   color: ${({theme}) => theme.errorText};
 `;
 
-
 // const Styles = StyleSheet.create({
 //   container:{
 //     flex: 1,
@@ -38,11 +36,11 @@ const ErrorText = styled.Text`
 // })
 
 const Login = ({navigation}) => {
-  const insets = useSafeAreaInsets(); 
+  const insets = useSafeAreaInsets();
   const [disabled, setDisabled] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  
+
   const passwordRef = useRef();
   useEffect(() => {
     setDisabled(!(email && password && !errorMessage));
@@ -63,14 +61,12 @@ const Login = ({navigation}) => {
     setPassword(changedPassword);
   };
 
-
-
   return (
     <KeyboardAwareScrollView
       contentContainerStyle={{flex: 1}}
       extraScrollheight={20}>
       <Container insets={insets}>
-        <Image />
+        <Image url={images.photo} />
         <Input
           label="Email"
           value={email}
@@ -91,22 +87,21 @@ const Login = ({navigation}) => {
         />
         <ErrorText>{errorMessage}</ErrorText>
         <Button
-          title="Login" 
+          title="Login"
           onPress={_handleLoginButtonPress}
           disabled={disabled}
         />
         <TouchableOpacity
           onPress={() => navigation.navigate('Signup')}
           style={{
-            marginTop:30
-          }}
-        >
-           <Text
-           style={{
-             fontSize:18
-           }}           
-           > 
-           Sign up with email </Text>
+            marginTop: 30,
+          }}>
+          <Text
+            style={{
+              fontSize: 18,
+            }}>
+            Sign up with email{' '}
+          </Text>
         </TouchableOpacity>
       </Container>
     </KeyboardAwareScrollView>
