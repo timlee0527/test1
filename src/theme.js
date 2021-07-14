@@ -20,6 +20,8 @@ export const theme = {
   buttonBackground: colors.blue,
   buttonTitle: colors.white,
   headerTintColor: colors.black,
+  spinnerBackground: colors.black,
+  spinnerIndicator: colors.white,
 };
 
 export const darkTheme = {

@@ -1,9 +1,12 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useRef, useEffect, useContext} from 'react';
 import styled from 'styled-components/native';
 import {Image, Input, Button} from '../components';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {validateEmail, removeWhitespace} from '../utils/common';
 import {images} from '../utils/images';
+import {Alert} from 'react-native';
+import {signup} from '../utils/firebase';
+import {ProgressContext, UserContext} from '../contexts';
 
 const Container = styled.View`
   flex: 1;
@@ -23,6 +26,9 @@ const ErrorText = styled.Text`
 `;
 
 const Signup = () => {
+  const {dispatch} = useContext(UserContext);
+  const {spinner} = useContext(ProgressContext);
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -63,7 +69,18 @@ const Signup = () => {
     );
   }, [name, email, password, passwordConfirm, errorMessage]);
 
-  const _handleSignupButtonPress = () => {};
+  const _handleSignupButtonPress = async () => {
+    try {
+      spinner.start();
+      const user = await signup({email, password, name, photoUrl});
+      dispatch(user); 
+      Alert.alert('Signup Success', user.email);
+    } catch (e) {
+      Alert.alert('Signup Error', e.message);
+    } finally {
+      spinner.stop();
+    }
+  };
 
   return (
     <KeyboardAwareScrollView extraScrollheight={20}>
