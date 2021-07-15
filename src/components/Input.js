@@ -1,6 +1,6 @@
 import React, {useState, forwardRef} from 'react';
 import styled from 'styled-components/native';
-//import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 const Container = styled.View`
   flex-direction: column;
@@ -16,7 +16,8 @@ const Label = styled.Text`
 `;
 
 const StyledTextInput = styled.TextInput`
-  background-color: ${({theme}) => theme.background};
+  background-color: ${({theme, editable}) =>
+    editable ? theme.background : theme.inputDisabledBackground};
   color: ${({theme}) => theme.text};
   padding: 20px 10px;
   font-size: 16px;
@@ -36,6 +37,7 @@ const Input = forwardRef(
       isPassword,
       returnKeyType,
       maxLength,
+      disabled,
     },
     ref
   ) => {
@@ -62,6 +64,7 @@ const Input = forwardRef(
           autoCapitalize="none"
           textContentType="none"
           secureTextEntry={isPassword}
+          editable={!disabled}
         />
       </Container>
     );
@@ -70,6 +73,14 @@ const Input = forwardRef(
 
 Input.defaultProps = {
   onBlur: () => {},
+  onChangeText: () => {},
+  onSubmitEditing: () => {},
+};
+
+Input.propTypes = {
+  onChangeText: PropTypes.func,
+  onSubmitEditing: PropTypes.func,
+  disabled: PropTypes.bool,
 };
 
 export default Input;

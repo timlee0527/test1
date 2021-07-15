@@ -22,6 +22,12 @@ export const theme = {
   headerTintColor: colors.black,
   spinnerBackground: colors.black,
   spinnerIndicator: colors.white,
+  buttonLogout: colors.red,
+  inputDisabledBackground: colors.grey_0,
+  listBorder: colors.grey_0,
+  listTime: colors.grey_1,
+  listDescription: colors.grey_1,
+  listIcon: colors.black,
 };
 
 export const darkTheme = {

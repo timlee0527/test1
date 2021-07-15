@@ -83,7 +83,6 @@ const Image = ({url, imageStyle, rounded, showButton, onChangeImage}) => {
         mediaTypes: 'photo',
       },
       response => {
-        //onsole.log(response);
         onChangeImage(response.assets[0].uri);
       }
     );
