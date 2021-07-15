@@ -59,14 +59,13 @@ export const updateUserPhoto = async photoUrl => {
   const storageUrl = photoUrl.startsWith('https')
     ? photoUrl
     : await uploadImage(photoUrl);
-      await user.updateProfile({photoUrl: storageUrl});
+  await user.updateProfile({photoUrl: storageUrl});
   return {name: user.displayName, email: user.email, photoUrl: user.photoURL};
 };
 
-
 export const DB = firebase.firestore();
 
-export const createChannel = async ({ title, description }) => {
+export const createChannel = async ({title, description}) => {
   const newChannelRef = DB.collection('channels').doc();
   const id = newChannelRef.id;
   const newChannel = {
@@ -77,4 +76,15 @@ export const createChannel = async ({ title, description }) => {
   };
   await newChannelRef.set(newChannel);
   return id;
+};
+
+export const createMessage = async ({channelId, message}) => {
+  return await DB.collection('channels')
+    .doc(channelId)
+    .collection('messages')
+    .doc(message._id)
+    .set({
+      ...message,
+      createdAt: Date.now(),
+    });
 };
